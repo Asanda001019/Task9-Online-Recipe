@@ -1,4 +1,21 @@
 {
+  "users": [
+    {
+      "id": "f9ad",
+      "email": "Samkelo@gmail.com",
+      "password": "Samkelo@1234"
+    },
+    {
+      "id": "6f93",
+      "email": "Asanda@gmail.com",
+      "password": "Asanda@123"
+    },
+    {
+      "id": "5002",
+      "email": "ASA@gmail.com",
+      "password": "Asa@123456"
+    }
+  ],
   "recipes": [
     {
       "id": "4207",
