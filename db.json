@@ -1,0 +1,22 @@
+{
+  "recipes": [
+    {
+      "id": "4207",
+      "recipeName": "Baking",
+      "ingredients": "[\"flour\"]",
+      "instructions": "[\"Use paper cups\"]",
+      "category": "dessert",
+      "prepTime": "15",
+      "servings": "3"
+    },
+    {
+      "id": "d7d8",
+      "recipeName": "Recipe Application",
+      "ingredients": "[\"Json server\"]",
+      "instructions": "[\"use jwt for authentication\"]",
+      "category": "dessert",
+      "prepTime": "45",
+      "servings": "1"
+    }
+  ]
+}
