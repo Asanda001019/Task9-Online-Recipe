@@ -11,13 +11,13 @@ const RecipeDisplay = () => {
   }, []);
 
   const fetchRecipes = async () => {
-    const response = await fetch('http://localhost:5000/recipes');
+    const response = await fetch('http://localhost:4000/recipes');
     const data = await response.json();
     setRecipes(data);
   };
 
   const handleDelete = async (id) => {
-    await fetch(`http://localhost:5000/recipes/${id}`, {
+    await fetch(`http://localhost:4000/recipes/${id}`, {
       method: 'DELETE',
     });
     fetchRecipes(); // Refresh the recipe list
@@ -41,7 +41,7 @@ const RecipeDisplay = () => {
       instructions: JSON.stringify(editRecipe.instructions.split(',')),
     };
 
-    await fetch(`http://localhost:5000/recipes/${editRecipe.id}`, {
+    await fetch(`http://localhost:4000/recipes/${editRecipe.id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',

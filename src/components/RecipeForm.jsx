@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 const RecipeForm = () => {
   const [recipeName, setRecipeName] = useState('');
   const [recipeImage, setRecipeImage] = useState(null);
+  const [preview, setPreview] = useState(null); // State for image preview
   const [ingredients, setIngredients] = useState(['']);
   const [instructions, setInstructions] = useState(['']);
   const [category, setCategory] = useState('');
@@ -14,8 +15,20 @@ const RecipeForm = () => {
 
   const navigate = useNavigate();
 
-  const handleImageChange = (e) => {
-    setRecipeImage(e.target.files[0]);
+  // Handle file change and create image preview
+  const handleImageChange = (event) => {
+    const selectedFile = event.target.files[0];
+    if (selectedFile && selectedFile.type.substr(0, 5) === "image") {
+      setRecipeImage(selectedFile);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPreview(reader.result);
+      };
+      reader.readAsDataURL(selectedFile);
+    } else {
+      setRecipeImage(null);
+      setPreview(null);
+    }
   };
 
   const handleIngredientChange = (index, value) => {
@@ -58,34 +71,12 @@ const RecipeForm = () => {
     setLoading(true);
     setError(''); // Reset error state
 
-    // Upload the image to Cloudinary
-    let imageUrl = '';
-    if (recipeImage) {
-      const formData = new FormData();
-      formData.append('file', recipeImage);
-      formData.append('upload_preset', 'YOUR_UPLOAD_PRESET'); // Replace with your upload preset
-
-      try {
-        const uploadResponse = await fetch(
-          `https://api.cloudinary.com/v1_1/YOUR_CLOUD_NAME/image/upload`, // Replace with your cloud name
-          {
-            method: 'POST',
-            body: formData,
-          }
-        );
-
-        const uploadData = await uploadResponse.json();
-        imageUrl = uploadData.secure_url; // Get the uploaded image URL
-      } catch (error) {
-        setError('Error uploading image. Please try again.');
-        setLoading(false);
-        return;
-      }
-    }
+    // Here you can handle the submission logic as required.
+    // If you're not uploading the image, you can set the image URL to the preview.
 
     const recipeData = {
       recipeName,
-      recipeImage: imageUrl, // Use the uploaded image URL
+      recipeImage: preview, // Use the preview data directly
       ingredients: JSON.stringify(ingredients),
       instructions: JSON.stringify(instructions),
       category,
@@ -94,7 +85,7 @@ const RecipeForm = () => {
     };
 
     try {
-      const response = await fetch('http://localhost:5000/recipes', {
+      const response = await fetch('http://localhost:4000/recipes', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -106,6 +97,7 @@ const RecipeForm = () => {
         // Reset form
         setRecipeName('');
         setRecipeImage(null);
+        setPreview(null); // Reset preview
         setIngredients(['']);
         setInstructions(['']);
         setCategory('');
@@ -147,6 +139,7 @@ const RecipeForm = () => {
           onChange={handleImageChange}
           required
         />
+        {preview && <img src={preview} alt="Image Preview" className="mt-2 w-full h-auto rounded" />} {/* Display preview */}
       </div>
 
       <div className="mb-4">
