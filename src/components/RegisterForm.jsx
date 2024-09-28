@@ -12,7 +12,7 @@ const RegisterForm = () => {
     e.preventDefault();
     const newUser = { email, password };
 
-    await fetch('http://localhost:4000/users', {
+    await fetch('http://localhost:3000/users', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

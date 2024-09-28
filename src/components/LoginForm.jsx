@@ -11,7 +11,7 @@ const LoginForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const response = await fetch('http://localhost:4000/users');
+    const response = await fetch('http://localhost:3000/users');
     const users = await response.json();
     const foundUser = users.find(user => user.email === email && user.password === password);
 

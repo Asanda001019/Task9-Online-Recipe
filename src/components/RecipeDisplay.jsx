@@ -1,4 +1,3 @@
-// src/RecipeDisplay.js
 import React, { useEffect, useState } from 'react';
 
 const RecipeDisplay = () => {
@@ -11,20 +10,24 @@ const RecipeDisplay = () => {
   }, []);
 
   const fetchRecipes = async () => {
-    const response = await fetch('http://localhost:4000/recipes');
+    const response = await fetch('http://localhost:3000/recipes');
     const data = await response.json();
     setRecipes(data);
   };
 
   const handleDelete = async (id) => {
-    await fetch(`http://localhost:4000/recipes/${id}`, {
+    await fetch(`http://localhost:3000/recipes/${id}`, {
       method: 'DELETE',
     });
-    fetchRecipes(); // Refresh the recipe list
+    fetchRecipes();
   };
 
   const openEditModal = (recipe) => {
-    setEditRecipe(recipe);
+    setEditRecipe({
+      ...recipe,
+      ingredients: JSON.parse(recipe.ingredients), // Ensure this is an array
+      instructions: JSON.parse(recipe.instructions) // Ensure this is an array
+    });
     setModalOpen(true);
   };
 
@@ -35,13 +38,14 @@ const RecipeDisplay = () => {
 
   const handleEdit = async (e) => {
     e.preventDefault();
+
     const updatedRecipe = {
       ...editRecipe,
-      ingredients: JSON.stringify(editRecipe.ingredients.split(',')),
-      instructions: JSON.stringify(editRecipe.instructions.split(',')),
+      ingredients: JSON.stringify(editRecipe.ingredients),
+      instructions: JSON.stringify(editRecipe.instructions),
     };
 
-    await fetch(`http://localhost:4000/recipes/${editRecipe.id}`, {
+    await fetch(`http://localhost:3000/recipes/${editRecipe.id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -92,8 +96,7 @@ const RecipeDisplay = () => {
         ))}
       </div>
 
-      {/* Modal for Editing Recipe */}
-      {modalOpen && (
+      {modalOpen && editRecipe && (
         <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
           <div className="bg-white p-6 rounded shadow-lg max-w-sm w-full">
             <h2 className="text-xl mb-4">Edit Recipe</h2>
@@ -113,7 +116,7 @@ const RecipeDisplay = () => {
                   type="text"
                   className="mt-1 block w-full p-2 border border-gray-300 rounded"
                   value={editRecipe.ingredients.join(',')}
-                  onChange={(e) => setEditRecipe({ ...editRecipe, ingredients: e.target.value.split(',') })}
+                  onChange={(e) => setEditRecipe({ ...editRecipe, ingredients: e.target.value.split(',').map(item => item.trim()) })}
                 />
               </div>
               <div className="mb-4">
@@ -122,7 +125,7 @@ const RecipeDisplay = () => {
                   type="text"
                   className="mt-1 block w-full p-2 border border-gray-300 rounded"
                   value={editRecipe.instructions.join(',')}
-                  onChange={(e) => setEditRecipe({ ...editRecipe, instructions: e.target.value.split(',') })}
+                  onChange={(e) => setEditRecipe({ ...editRecipe, instructions: e.target.value.split(',').map(item => item.trim()) })}
                 />
               </div>
               <div className="mb-4">
