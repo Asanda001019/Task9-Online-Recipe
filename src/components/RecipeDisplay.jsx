@@ -6,6 +6,12 @@ const RecipeDisplay = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
 
+  const categoryColors = {
+    dessert: 'bg-pink-200',
+    maincourse: 'bg-blue-200',
+    appetizer: 'bg-yellow-200',
+  };
+
   useEffect(() => {
     fetchRecipes();
   }, []);
@@ -55,7 +61,6 @@ const RecipeDisplay = () => {
     closeEditModal();
   };
 
-  // Filter recipes based on search query
   const filteredRecipes = recipes.filter(recipe =>
     recipe.recipeName.toLowerCase().includes(searchQuery.toLowerCase())
   );
@@ -76,7 +81,7 @@ const RecipeDisplay = () => {
       />
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {filteredRecipes.map(recipe => (
-          <div key={recipe.id} className="bg-white shadow-lg rounded-lg p-4">
+          <div key={recipe.id} className={`shadow-lg rounded-lg p-4 ${categoryColors[recipe.category] || 'bg-white'}`}>
             <h3 className="font-bold text-lg">{recipe.recipeName}</h3>
             {recipe.recipeImage && (
               <img
@@ -101,7 +106,7 @@ const RecipeDisplay = () => {
               ))}
             </ol>
             <button onClick={() => openEditModal(recipe)} className="mt-2 bg-yellow-500 text-white px-4 py-2 rounded">Edit</button>
-            <button onClick={() => handleDelete(recipe.id)} className="mt-2 bg-red-500 text-white px-4 py-2 rounded">Delete</button>
+            <button onClick={() => handleDelete(recipe.id)} className="mt-2 ml-2 bg-red-500 text-white px-4 py-2 rounded">Delete</button>
           </div>
         ))}
       </div>
