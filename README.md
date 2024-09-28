@@ -20,6 +20,8 @@ npm install
 Start the react server
 ```bash
 npm run dev
+
+Start Json-server
 json-server --watch db.json --port 5000
 ```
 ## Tech Stack
