@@ -4,6 +4,7 @@ const RecipeDisplay = () => {
   const [recipes, setRecipes] = useState([]);
   const [editRecipe, setEditRecipe] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
 
   useEffect(() => {
     fetchRecipes();
@@ -25,8 +26,8 @@ const RecipeDisplay = () => {
   const openEditModal = (recipe) => {
     setEditRecipe({
       ...recipe,
-      ingredients: JSON.parse(recipe.ingredients), // Ensure this is an array
-      instructions: JSON.parse(recipe.instructions) // Ensure this is an array
+      ingredients: JSON.parse(recipe.ingredients),
+      instructions: JSON.parse(recipe.instructions)
     });
     setModalOpen(true);
   };
@@ -38,13 +39,11 @@ const RecipeDisplay = () => {
 
   const handleEdit = async (e) => {
     e.preventDefault();
-
     const updatedRecipe = {
       ...editRecipe,
       ingredients: JSON.stringify(editRecipe.ingredients),
       instructions: JSON.stringify(editRecipe.instructions),
     };
-
     await fetch(`http://localhost:3000/recipes/${editRecipe.id}`, {
       method: 'PUT',
       headers: {
@@ -52,10 +51,14 @@ const RecipeDisplay = () => {
       },
       body: JSON.stringify(updatedRecipe),
     });
-
     fetchRecipes();
     closeEditModal();
   };
+
+  // Filter recipes based on search query
+  const filteredRecipes = recipes.filter(recipe =>
+    recipe.recipeName.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   if (!recipes.length) {
     return <div>Loading...</div>;
@@ -64,8 +67,15 @@ const RecipeDisplay = () => {
   return (
     <div className="max-w-4xl mx-auto p-6">
       <h2 className="text-2xl font-bold mb-4">Submitted Recipes</h2>
+      <input
+        type="text"
+        placeholder="Search recipes..."
+        className="mb-4 p-2 border border-gray-300 rounded"
+        value={searchQuery}
+        onChange={(e) => setSearchQuery(e.target.value)}
+      />
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {recipes.map(recipe => (
+        {filteredRecipes.map(recipe => (
           <div key={recipe.id} className="bg-white shadow-lg rounded-lg p-4">
             <h3 className="font-bold text-lg">{recipe.recipeName}</h3>
             {recipe.recipeImage && (

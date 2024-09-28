@@ -9,6 +9,7 @@ import RegisterForm from './components/RegisterForm';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import Home from './components/Home';
+import PrivacyPolicy from './components/PrivacyPolicy';
 
 const App = () => {
   return (
@@ -18,6 +19,7 @@ const App = () => {
           <Navbar />
           <main className="flex-grow">
             <Routes>
+              <Route path="/privacy" element={<PrivacyPolicy/>} /> 
               <Route path="/" element={<Home />} /> {/* Home route */}
               <Route path="/recipe" element={<RecipeDisplay />} />
               <Route path="/add-recipe" element={<RecipeForm />} />
