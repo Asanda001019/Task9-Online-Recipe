@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const RecipeDisplay = () => {
   const [recipes, setRecipes] = useState([]);
   const [editRecipe, setEditRecipe] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  const navigate = useNavigate();
 
   const categoryColors = {
     dessert: 'bg-pink-200',
@@ -33,7 +35,7 @@ const RecipeDisplay = () => {
     setEditRecipe({
       ...recipe,
       ingredients: JSON.parse(recipe.ingredients),
-      instructions: JSON.parse(recipe.instructions)
+      instructions: JSON.parse(recipe.instructions),
     });
     setModalOpen(true);
   };
@@ -61,7 +63,7 @@ const RecipeDisplay = () => {
     closeEditModal();
   };
 
-  const filteredRecipes = recipes.filter(recipe =>
+  const filteredRecipes = recipes.filter((recipe) =>
     recipe.recipeName.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
@@ -80,7 +82,7 @@ const RecipeDisplay = () => {
         onChange={(e) => setSearchQuery(e.target.value)}
       />
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {filteredRecipes.map(recipe => (
+        {filteredRecipes.map((recipe) => (
           <div key={recipe.id} className={`shadow-lg rounded-lg p-4 ${categoryColors[recipe.category] || 'bg-white'}`}>
             <h3 className="font-bold text-lg">{recipe.recipeName}</h3>
             {recipe.recipeImage && (
@@ -105,8 +107,18 @@ const RecipeDisplay = () => {
                 <li key={index}>{instruction}</li>
               ))}
             </ol>
-            <button onClick={() => openEditModal(recipe)} className="mt-2 bg-yellow-500 text-white px-4 py-2 rounded">Edit</button>
-            <button onClick={() => handleDelete(recipe.id)} className="mt-2 ml-2 bg-red-500 text-white px-4 py-2 rounded">Delete</button>
+            <button onClick={() => openEditModal(recipe)} className="mt-2 bg-yellow-500 text-white px-4 py-2 rounded">
+              Edit
+            </button>
+            <button onClick={() => handleDelete(recipe.id)} className="mt-2 ml-2 bg-red-500 text-white px-4 py-2 rounded">
+              Delete
+            </button>
+            <button
+              onClick={() => navigate(`/recipe/${recipe.id}`)}
+              className="mt-2 ml-2 bg-blue-500 text-white px-4 py-2 rounded"
+            >
+              Read More
+            </button>
           </div>
         ))}
       </div>

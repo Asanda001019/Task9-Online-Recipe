@@ -10,6 +10,7 @@ import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import Home from './components/Home';
 import PrivacyPolicy from './components/PrivacyPolicy';
+import RecipeDetail from './components/RecipeDetail';
 
 const App = () => {
   return (
@@ -22,6 +23,7 @@ const App = () => {
               <Route path="/privacy" element={<PrivacyPolicy/>} /> 
               <Route path="/" element={<Home />} /> {/* Home route */}
               <Route path="/recipe" element={<RecipeDisplay />} />
+              <Route path="/recipe/:id" element={<RecipeDetail />} />
               <Route path="/add-recipe" element={<RecipeForm />} />
               <Route path="/login" element={<LoginForm />} />
               <Route path="/register" element={<RegisterForm />} />
