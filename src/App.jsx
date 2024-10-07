@@ -11,6 +11,7 @@ import Footer from './components/Footer';
 import Home from './components/Home';
 import PrivacyPolicy from './components/PrivacyPolicy';
 import RecipeDetail from './components/RecipeDetail';
+import NoPage from './components/NoPage';
 
 const App = () => {
   return (
@@ -27,6 +28,7 @@ const App = () => {
               <Route path="/add-recipe" element={<RecipeForm />} />
               <Route path="/login" element={<LoginForm />} />
               <Route path="/register" element={<RegisterForm />} />
+              <Route path='*'   element={<NoPage/>}/>
             </Routes>
           </main>
           <Footer />

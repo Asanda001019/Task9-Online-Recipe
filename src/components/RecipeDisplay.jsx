@@ -115,9 +115,8 @@ const RecipeDisplay = () => {
             </button>
             <button
               onClick={() => navigate(`/recipe/${recipe.id}`)}
-              className="mt-2 ml-2 bg-blue-500 text-white px-4 py-2 rounded"
-            >
-              Read More
+              className="mt-2 ml-2 bg-blue-500 text-white px-4 py-2 rounded">
+            More
             </button>
           </div>
         ))}
